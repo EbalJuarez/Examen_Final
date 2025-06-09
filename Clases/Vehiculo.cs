@@ -7,6 +7,8 @@ namespace Examen_Final.Clases
         [Required]
         public string? numero_chasis { get; set; }
         [Required]
+        [StringLength(10,
+        ErrorMessage = "Contien muchos caracteres para una marca")]
         public string? Marca { get; set; }
         [Required]
         public string? año_fabricacion { get; set; }

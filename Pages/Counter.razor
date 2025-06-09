@@ -11,37 +11,40 @@
 
     <div class="Contenedor-sesion">
         <div class="form-container">
-            <h1 class="title">Registro</h1>
+            <h1 class="title" style="margin-left:40%">Registro</h1>
             <div class="form">
-                
-                <div class="row">
+                <div class="row" style="margin-top:50px">
                     <div class="col">
                         <div class="input-group">
                             <label for="Numero de chasis">Numero de chasis:</label>
-                            <InputText placeholder="" id="Numero de chasis" @bind-Value="vehiculo.numero_chasis" style="width: 100%; border-radius: 0.375rem; border: 1px solid rgba(55, 65, 81, 1); outline: 0; background-color: rgba(17, 24, 39, 1); padding: 0.75rem 1rem; color: rgba(243, 244, 246, 1);" />
+                            <InputText placeholder="" id="Numero de chasis" @bind-Value="vehiculo.numero_chasis"/>
                             <ValidationMessage For="() => vehiculo.numero_chasis" />
                         </div>
                     </div>
                     <div class="col">
                         <label for="Marca">Marca:</label>
-                        <InputText placeholder="" id="Marca" @bind-Value="vehiculo.Marca" style="width: 100%; border-radius: 0.375rem; border: 1px solid rgba(55, 65, 81, 1); outline: 0; background-color: rgba(17, 24, 39, 1); padding: 0.75rem 1rem; color: rgba(243, 244, 246, 1);" />
+                        <InputText placeholder="" id="Marca" @bind-Value="vehiculo.Marca"/>
                         <ValidationMessage For="() => vehiculo.Marca" />
                     </div>
                     <div class="col">
                         <label for="año">Año de fabricacion:</label>
-                        <InputText placeholder="" id="año" @bind-Value="vehiculo.año_fabricacion" style="width: 100%; border-radius: 0.375rem; border: 1px solid rgba(55, 65, 81, 1); outline: 0; background-color: rgba(17, 24, 39, 1); padding: 0.75rem 1rem; color: rgba(243, 244, 246, 1);" />
-                        <ValidationMessage For="() => vehiculo.año_fabricacion" />
+                        <InputText placeholder="" id="año" @bind-Value="vehiculo.año_fabricacion"/>
+                        <ValidationMessage For="() => vehiculo.año_fabricacion"/>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top:50px">
                     <div class="col">
                         <label for="puertas">Numero de puertas:</label>
-                        <InputNumber placeholder="" id="puertas" @bind-Value="vehiculo.numero_puertas" style="width: 100%; border-radius: 0.375rem; border: 1px solid rgba(55, 65, 81, 1); outline: 0; background-color: rgba(17, 24, 39, 1); padding: 0.75rem 1rem; color: rgba(243, 244, 246, 1);" />
+                        <InputNumber placeholder=""
+                                     id="correo"
+                                     @bind-Value="vehiculo.numero_puertas"
+                                     Min="3"
+                                     Max="5"/>
                         <ValidationMessage For="() => vehiculo.numero_puertas" />
                     </div>
                     <div class="col">
                         <label for="classification">Primary Classification: </label>
-                        <InputSelect id="classification" class="form-select form-select-sm" @bind-Value="vehiculo.tipo_combustible" style="width: 100%; border-radius: 0.375rem; border: 1px solid rgba(55, 65, 81, 1); outline: 0; background-color: rgba(17, 24, 39, 1); padding: 0.75rem 1rem; color: rgba(243, 244, 246, 1);">
+                        <InputSelect id="classification" class="form-select form-select-sm" @bind-Value="vehiculo.tipo_combustible">
                             <option value="">Seleccione el tipo de combustible...</option>
                             <option value="Diesel">Diesel</option>
                             <option value="Gasolina">Gasolina</option>
@@ -68,10 +71,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Recuperar la lista de starships desde LocalStorage a una variable var
         var savedvehi = localStorage.GetItem<List<Automovil>>("Vehiculos");
 
-        // Validar si la lista fue recuperada correctamente, copiarla a la lista
         if (savedvehi != null)
         {
             Lista_Vehiculos = savedvehi;
