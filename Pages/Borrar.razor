@@ -1,0 +1,35 @@
+﻿@page "/auto-borrar/{codigo}"
+@using Examen_Final.Clases
+
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+
+<h3>Eliminando...</h3>
+
+@code {
+    //recibimos el parametro con el colegiado
+    [Parameter]
+
+    public string? codigo { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        //cargamos todos los catedráticos que ya estaban guardados
+        var Alimentos = localStorage.GetItem<List<Automovil>>("Vehiculos");
+        if (Alimentos != null)
+        {
+            //buscamos el catedrático que su colegiado coincida con el colegiado que nos enviaron como parámetro
+            var alimento = Alimentos.FirstOrDefault(c => c.numero_chasis == codigo);
+            if (alimento != null)
+            {
+                //borra al catedrático de la lista
+                Alimentos.Remove(alimento);
+                //vuelve a escribir en el archivo la lista de catedráticos, pues de esta ya se borro al catedrático indicado
+                localStorage.SetItem("Vehiculos", Alimentos);
+            }
+        }
+        NavigationManager.NavigateTo("/weather");
+    }
+}

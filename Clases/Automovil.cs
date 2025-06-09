@@ -8,5 +8,6 @@ namespace Examen_Final.Clases
         public int numero_puertas {  get; set; }
         [Required]
         public string? tipo_combustible { get; set; }
+
     }
 }

@@ -1,13 +1,15 @@
 ﻿@page "/weather"
 @inject HttpClient Http
-
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@using Examen_Final.Clases
+@inject NavigationManager NavigationManager
 <PageTitle>Weather</PageTitle>
 
-<h1>Weather</h1>
+<h1>Vehiculos</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Cantidad de vehiculos registrados: @contador</p>
 
-@if (forecasts == null)
+@if (Lista_Autos == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -16,20 +18,36 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Numero Chasis</th>
+                <th>Marca</th>
+                <th>Año fabricacion</th>
+                <th>Numero Puertas</th>
+                <th>Tipo de combustible</th>
+                <th>Editar</th>
+                <th>Borrar</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var auto in Lista_Autos)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@auto.numero_chasis</td>
+                    <td>@auto.Marca</td>
+                    <td>@auto.año_fabricacion</td>
+                    <td>@auto.numero_puertas</td>
+                    <td>@auto.tipo_combustible</td>
+                    <td>
+                        <button class="btn btn-warning"
+                                @onclick="@(() => NavigationManager.NavigateTo($"/auto-editar/{auto.numero_chasis}"))">
+                            Editar
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger"
+                                @onclick="@(() => NavigationManager.NavigateTo($"/auto-borrar/{auto.numero_chasis}"))">
+                            Borrar
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -37,21 +55,21 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
-
+    private List<Automovil> Lista_Autos = new List<Automovil>();
+    public static int contador = 0;
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
 
-    public class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
+        var savedAuto = localStorage.GetItem<List<Automovil>>("Vehiculos");
 
-        public int TemperatureC { get; set; }
+        if (savedAuto != null)
+        {
+            Lista_Autos = savedAuto;
 
-        public string? Summary { get; set; }
+        }
+        foreach(var car in Lista_Autos){
+            contador += car.con;
+        }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }

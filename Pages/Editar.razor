@@ -1,8 +1,8 @@
-﻿@page "/counter"
+﻿@page "/auto-editar/{codigo}"
 @inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
 @using Examen_Final.Clases
-
-<PageTitle>Pagina registro de vehiculos</PageTitle>
+@inject NavigationManager NavigationManager
+<PageTitle>Editar</PageTitle>
 
 <EditForm Model="@vehiculo" OnValidSubmit="@guardar">
 
@@ -11,25 +11,25 @@
 
     <div class="Contenedor-sesion">
         <div class="form-container">
-            <h1 class="title" style="margin-left:40%">Registro</h1>
+            <h1 class="title" style="margin-left:40%">Editar</h1>
             <div class="form">
                 <div class="row" style="margin-top:50px">
                     <div class="col">
                         <div class="input-group">
                             <label for="Numero de chasis">Numero de chasis:</label>
-                            <InputText placeholder="" id="Numero de chasis" @bind-Value="vehiculo.numero_chasis"/>
+                            <InputText placeholder="" id="Numero de chasis" @bind-Value="vehiculo.numero_chasis" />
                             <ValidationMessage For="() => vehiculo.numero_chasis" />
                         </div>
                     </div>
                     <div class="col">
                         <label for="Marca">Marca:</label>
-                        <InputText placeholder="" id="Marca" @bind-Value="vehiculo.Marca"/>
+                        <InputText placeholder="" id="Marca" @bind-Value="vehiculo.Marca" />
                         <ValidationMessage For="() => vehiculo.Marca" />
                     </div>
                     <div class="col">
                         <label for="año">Año de fabricacion:</label>
-                        <InputText placeholder="" id="año" @bind-Value="vehiculo.año_fabricacion"/>
-                        <ValidationMessage For="() => vehiculo.año_fabricacion"/>
+                        <InputText placeholder="" id="año" @bind-Value="vehiculo.año_fabricacion" />
+                        <ValidationMessage For="() => vehiculo.año_fabricacion" />
                     </div>
                 </div>
                 <div class="row" style="margin-top:50px">
@@ -39,7 +39,7 @@
                         id="correo"
                         @bind-Value="vehiculo.numero_puertas"
                         Min="3"
-                        Max="5"/>
+                        Max="5" />
                         <ValidationMessage For="() => vehiculo.numero_puertas" />
                     </div>
                     <div class="col">
@@ -60,14 +60,15 @@
 </EditForm>
 
 @code {
+    [Parameter]
+    public string? codigo { get; set; }
     private Automovil vehiculo = new Automovil();
     private List<Automovil> Lista_Vehiculos = new List<Automovil>();
 
     private void guardar()
     {
-        vehiculo.con = 1;
-        Lista_Vehiculos.Add(vehiculo);
         localStorage.SetItem("Vehiculos", Lista_Vehiculos);
+        NavigationManager.NavigateTo("/weather");
     }
 
     protected override async Task OnInitializedAsync()
@@ -77,7 +78,8 @@
         if (savedvehi != null)
         {
             Lista_Vehiculos = savedvehi;
+            vehiculo = Lista_Vehiculos.FirstOrDefault(a => a.numero_chasis == codigo);
         }
-
+   
     }
 }
